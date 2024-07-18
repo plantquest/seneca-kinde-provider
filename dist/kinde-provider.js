@@ -3,24 +3,26 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // TODO: namespace provider zone; needs seneca-entity feature
 const rest_1 = require("@octokit/rest");
-/* Repo ids are of the form 'owner/name'. The internal github id field is
- * moved to github_id.
+require("dotenv").config();
+const { KindeClient, GrantType } = require("@kinde-oss/kinde-nodejs-sdk");
+/* Repo ids are of the form 'owner/name'. The internal kinde id field is
+ * moved to kinde_id.
  *
  *
  */
-function GithubProvider(_options) {
+function KindeProvider(_options) {
     const seneca = this;
-    const ZONE_BASE = 'provider/github/';
+    const ZONE_BASE = 'provider/kinde/';
     let octokit;
     // NOTE: sys- zone prefix is reserved.
     seneca
-        .message('sys:provider,provider:github,get:info', get_info)
-        .message('role:entity,cmd:load,zone:provider,base:github,name:repo', load_repo)
-        .message('role:entity,cmd:save,zone:provider,base:github,name:repo', save_repo);
+        .message('sys:provider,provider:kinde,get:info', get_info)
+        .message('role:entity,cmd:load,zone:provider,base:kinde,name:repo', load_repo)
+        .message('role:entity,cmd:save,zone:provider,base:kinde,name:repo', save_repo);
     async function get_info(_msg) {
         return {
             ok: true,
-            name: 'github',
+            name: 'kinde',
             details: {
                 sdk: '@octokit/rest'
             }
@@ -36,7 +38,7 @@ function GithubProvider(_options) {
         });
         if (res && 200 === res.status) {
             let data = res.data;
-            data.github_id = data.id;
+            data.kinde_id = data.id;
             data.id = q.id;
             ent = this.make$(ZONE_BASE + 'repo').data$(data);
         }
@@ -53,14 +55,14 @@ function GithubProvider(_options) {
         let res = await octokit.rest.repos.update(data);
         if (res && 200 === res.status) {
             let data = res.data;
-            data.github_id = data.id;
+            data.kinde_id = data.id;
             data.id = ownername + '/' + reponame;
             ent = this.make$(ZONE_BASE + 'repo').data$(data);
         }
         return ent;
     }
     seneca.prepare(async function () {
-        let out = await this.post('sys:provider,get:key,provider:github,key:api');
+        let out = await this.post('sys:provider,get:key,provider:kinde,key:api');
         if (!out.ok) {
             this.fail('api-key-missing');
         }
@@ -82,9 +84,9 @@ const defaults = {
     // TODO: Enable debug logging
     debug: false
 };
-Object.assign(GithubProvider, { defaults });
-exports.default = GithubProvider;
+Object.assign(KindeProvider, { defaults });
+exports.default = KindeProvider;
 if ('undefined' !== typeof (module)) {
-    module.exports = GithubProvider;
+    module.exports = KindeProvider;
 }
-//# sourceMappingURL=github-provider.js.map
+//# sourceMappingURL=kinde-provider.js.map

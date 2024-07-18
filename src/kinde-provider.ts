@@ -5,21 +5,24 @@
 
 import { Octokit } from '@octokit/rest'
 
+require("dotenv").config();
 
-type GithubProviderOptions = {}
+const {KindeClient, GrantType} = require("@kinde-oss/kinde-nodejs-sdk");
+
+type KindeProviderOptions = {}
 
 
-/* Repo ids are of the form 'owner/name'. The internal github id field is
- * moved to github_id.
+/* Repo ids are of the form 'owner/name'. The internal kinde id field is
+ * moved to kinde_id.
  *
  *
  */
 
 
-function GithubProvider(this: any, _options: any) {
+function KindeProvider(this: any, _options: any) {
   const seneca: any = this
 
-  const ZONE_BASE = 'provider/github/'
+  const ZONE_BASE = 'provider/kinde/'
 
   let octokit: Octokit
 
@@ -27,11 +30,11 @@ function GithubProvider(this: any, _options: any) {
   // NOTE: sys- zone prefix is reserved.
 
   seneca
-    .message('sys:provider,provider:github,get:info', get_info)
-    .message('role:entity,cmd:load,zone:provider,base:github,name:repo',
+    .message('sys:provider,provider:kinde,get:info', get_info)
+    .message('role:entity,cmd:load,zone:provider,base:kinde,name:repo',
       load_repo)
 
-    .message('role:entity,cmd:save,zone:provider,base:github,name:repo',
+    .message('role:entity,cmd:save,zone:provider,base:kinde,name:repo',
       save_repo)
 
 
@@ -39,7 +42,7 @@ function GithubProvider(this: any, _options: any) {
   async function get_info(this: any, _msg: any) {
     return {
       ok: true,
-      name: 'github',
+      name: 'kinde',
       details: {
         sdk: '@octokit/rest'
       }
@@ -59,7 +62,7 @@ function GithubProvider(this: any, _options: any) {
 
     if (res && 200 === res.status) {
       let data: any = res.data
-      data.github_id = data.id
+      data.kinde_id = data.id
       data.id = q.id
       ent = this.make$(ZONE_BASE + 'repo').data$(data)
     }
@@ -83,7 +86,7 @@ function GithubProvider(this: any, _options: any) {
 
     if (res && 200 === res.status) {
       let data: any = res.data
-      data.github_id = data.id
+      data.kinde_id = data.id
       data.id = ownername + '/' + reponame
       ent = this.make$(ZONE_BASE + 'repo').data$(data)
     }
@@ -94,7 +97,7 @@ function GithubProvider(this: any, _options: any) {
 
 
   seneca.prepare(async function(this: any) {
-    let out = await this.post('sys:provider,get:key,provider:github,key:api')
+    let out = await this.post('sys:provider,get:key,provider:kinde,key:api')
     if (!out.ok) {
       this.fail('api-key-missing')
     }
@@ -118,17 +121,17 @@ function GithubProvider(this: any, _options: any) {
 
 
 // Default options.
-const defaults: GithubProviderOptions = {
+const defaults: KindeProviderOptions = {
 
   // TODO: Enable debug logging
   debug: false
 }
 
 
-Object.assign(GithubProvider, { defaults })
+Object.assign(KindeProvider, { defaults })
 
-export default GithubProvider
+export default KindeProvider
 
 if ('undefined' !== typeof (module)) {
-  module.exports = GithubProvider
+  module.exports = KindeProvider
 }

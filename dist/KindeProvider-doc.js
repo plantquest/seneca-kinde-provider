@@ -6,14 +6,14 @@ const docs = {
         desc: 'Get information about the provider.',
     },
     load_repo: {
-        desc: 'Load GitHub repository data into an entity.',
+        desc: 'Load Kinde repository data into an entity.',
     },
     save_repo: {
-        desc: 'Update GitHub repository data from an entity.',
+        desc: 'Update Kinde repository data from an entity.',
     },
 };
 exports.default = docs;
 if ('undefined' !== typeof (module)) {
     module.exports = docs;
 }
-//# sourceMappingURL=GithubProvider-doc.js.map
+//# sourceMappingURL=KindeProvider-doc.js.map

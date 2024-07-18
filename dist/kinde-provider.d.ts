@@ -1,4 +1,4 @@
-declare function GithubProvider(this: any, _options: any): {
+declare function KindeProvider(this: any, _options: any): {
     exports: {
         native: () => {
             octokit: import("@octokit/core").Octokit & {
@@ -7,4 +7,4 @@ declare function GithubProvider(this: any, _options: any): {
         };
     };
 };
-export default GithubProvider;
+export default KindeProvider;

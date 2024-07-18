@@ -1,14 +1,14 @@
 {
-  "name": "@seneca/github-provider",
+  "name": "@seneca/kinde-provider",
   "version": "0.2.0",
-  "main": "dist/github-provider.js",
+  "main": "dist/kinde-provider.js",
   "type": "commonjs",
-  "types": "dist/github-provider.d.ts",
+  "types": "dist/kinde-provider.d.ts",
   "description": "Handle incoming messages within other frameworks.",
-  "homepage": "https://github.com/senecajs/seneca-github-provider",
+  "homepage": "https://github.com/senecajs/seneca-kinde-provider",
   "keywords": [
     "seneca",
-    "github-provider"
+    "kinde-provider"
   ],
   "author": "Richard Rodger - richardrodger.com",
   "repository": {
@@ -53,6 +53,7 @@
     "seneca-promisify": ">=2"
   },
   "dependencies": {
+    "@kinde-oss/kinde-nodejs-sdk": "^1.2.3",
     "@octokit/rest": "^18.12.0"
   }
 }

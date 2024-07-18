@@ -8,11 +8,11 @@ const docs = {
   },
 
   load_repo: {
-    desc: 'Load GitHub repository data into an entity.',
+    desc: 'Load Kinde repository data into an entity.',
   },
 
   save_repo: {
-    desc: 'Update GitHub repository data from an entity.',
+    desc: 'Update Kinde repository data from an entity.',
   },
 
 }
